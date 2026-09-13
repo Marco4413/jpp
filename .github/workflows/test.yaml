@@ -1,0 +1,53 @@
+name: Test
+run-name: Test '${{ github.ref_name }}' (${{ github.sha }})
+
+on:
+  push:
+    paths:
+      - include/**
+      - src/**
+      - tests/**
+      - jpp.lua
+      - premake5.lua
+  pull_request:
+    paths:
+      - include/**
+      - src/**
+      - tests/**
+      - jpp.lua
+      - premake5.lua
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      PREMAKE_INSTALL_URL: https://github.com/premake/premake-core/releases/download/v5.0.0-beta7/premake-5.0.0-beta7-linux.tar.gz
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          submodules: true
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -q -y clang curl make tar
+          curl -Lo premake5.tar.gz ${{ env.PREMAKE_INSTALL_URL }}
+          tar -xf ./premake5.tar.gz
+      - name: Generate Project Files
+        run: |
+          ./premake5 --cc=clang --jpp-test-static-link gmake
+      - name: Build
+        run: |
+          make -j config?=release jpp-test
+      - name: Run Tests
+        run: |
+          jpp_test_executables=( ./build/jpp-test/linux_*/*/jpp-test )
+          "${jpp_test_executables[0]}"
