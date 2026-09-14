@@ -2,6 +2,7 @@
 
 set -e
 
+cc="${cc:-c++}"
 example_executable='./example_runner'
 
 if [ "$#" -lt 1 ]; then
@@ -14,5 +15,5 @@ set -x
 example="$1"
 shift
 
-g++ -Wall -Wextra -Wpedantic -Werror -std=c++17 -o "$example_executable" "$example" -Iinclude
+"$cc" -Wall -Wextra -Wpedantic -Werror -std=c++17 -o "$example_executable" "$example" -Iinclude
 "$example_executable" $@
