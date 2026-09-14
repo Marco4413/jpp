@@ -413,6 +413,7 @@ object &value::as_object()
 
 value &value::operator[](int index)
 {
+    if (index < 0) _internals::abort("value::operator[](int) negative array index");
     return (*this)[static_cast<size_t>(index)];
 }
 
@@ -424,6 +425,7 @@ value &value::operator[](size_t index)
 
 const value &value::operator[](int index) const
 {
+    if (index < 0) _internals::abort("value::operator[](int) negative array index");
     return (*this)[static_cast<size_t>(index)];
 }
 
