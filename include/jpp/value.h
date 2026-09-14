@@ -178,8 +178,22 @@ namespace jpp
         map_type m_value;
     };
 
+    enum class type
+    {
+        null = 0,
+        boolean,
+        integer,
+        number,
+        string,
+        array,
+        object,
+    };
+
     class value
     {
+    public:
+        using variant_type = std::variant<std::nullptr_t, bool, integer, number, string, array, object>;
+
     public:
         value();
         ~value() = default;
@@ -197,6 +211,8 @@ namespace jpp
 
         const value &as_const() const;
         const value &operator*() const;
+
+        type get_type() const;
 
         bool is_null() const;
 
@@ -240,7 +256,7 @@ namespace jpp
         const value &operator[](const string &key) const;
 
     private:
-        std::variant<std::nullptr_t, bool, integer, number, string, array, object> m_value;
+        variant_type m_value;
     };
 
     inline const value null = value();

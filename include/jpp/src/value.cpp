@@ -2,8 +2,21 @@
 
 #include "../value.h"
 
+#include <cstdio>
+
+#include <array>
+
 namespace jpp
 {
+
+namespace _internals
+{
+    static void abort(const char *message)
+    {
+        std::fprintf(stderr, "abort: %s\n", message);
+        std::abort();
+    }
+}
 
 array::array(const array &other)
 {
@@ -311,6 +324,18 @@ const value &value::as_const() const
 const value &value::operator*() const
 {
     return as_const();
+}
+
+type value::get_type() const
+{
+    static constexpr std::array<type, std::variant_size_v<variant_type>> s_types{
+        type::null, type::boolean, type::integer, type::number, type::string, type::array, type::object
+    };
+
+    size_t type_index = m_value.index();
+    if (type_index == std::variant_npos)
+        _internals::abort("value::get_type() invalid variant type index");
+    return s_types[type_index];
 }
 
 bool value::is_null() const { return std::holds_alternative<std::nullptr_t>(m_value); }

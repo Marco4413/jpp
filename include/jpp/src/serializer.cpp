@@ -15,14 +15,16 @@ serializer::serializer(options options)
 
 void serializer::serialize(const value &value, string &result, size_t depth)
 {
-    if (value.is_null())    return serialize(nullptr, result);
-    if (value.is_bool())    return serialize(value.as_bool(),    result);
-    if (value.is_integer()) return serialize(value.as_integer(), result);
-    if (value.is_number())  return serialize(value.as_number(),  result);
-    if (value.is_string())  return serialize(value.as_string(),  result);
-    if (value.is_array())   return serialize(value.as_array(),   result, depth);
-    if (value.is_object())  return serialize(value.as_object(),  result, depth);
-    std::abort(); // UNREACHABLE
+    switch (value.get_type()) {
+    case type::null:    break;
+    case type::boolean: return serialize(value.as_bool(),    result);
+    case type::integer: return serialize(value.as_integer(), result);
+    case type::number:  return serialize(value.as_number(),  result);
+    case type::string:  return serialize(value.as_string(),  result);
+    case type::array:   return serialize(value.as_array(),   result, depth);
+    case type::object:  return serialize(value.as_object(),  result, depth);
+    }
+    return serialize(nullptr, result);
 }
 
 void serializer::serialize(std::nullptr_t value, string &result)
