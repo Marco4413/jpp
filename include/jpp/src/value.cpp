@@ -231,13 +231,12 @@ bool object::contains(const string &key) const
     return m_value.find(key) != m_value.end();
 }
 
-value &object::at(string_view key)
+value &object::at(const char *key)
 {
-    s_temp_key = key;
-    return at(s_temp_key);
+    return at(string_view(key));
 }
 
-const value &object::at(string_view key) const
+value &object::at(string_view key)
 {
     s_temp_key = key;
     return at(s_temp_key);
@@ -248,9 +247,42 @@ value &object::at(const string &key)
     return *m_value.at(key);
 }
 
+const value &object::at(const char *key) const
+{
+    return at(string_view(key));
+}
+
+const value &object::at(string_view key) const
+{
+    s_temp_key = key;
+    return at(s_temp_key);
+}
+
 const value &object::at(const string &key) const
 {
     return *m_value.at(key);
+}
+
+object &object::erase(const char *key)
+{
+    return erase(string_view(key));
+}
+
+object &object::erase(string_view key)
+{
+    s_temp_key = key;
+    return erase(s_temp_key);
+}
+
+object &object::erase(const string &key)
+{
+    m_value.erase(key);
+    return *this;
+}
+
+bool object::empty() const
+{
+    return m_value.empty();
 }
 
 object::iterator object::begin()

@@ -129,11 +129,19 @@ namespace jpp
         bool contains(string_view key) const;
         bool contains(const string &key) const;
 
+        value &at(const char *key);
         value &at(string_view key);
-        const value &at(string_view key) const;
-
         value &at(const string &key);
+
+        const value &at(const char *key) const;
+        const value &at(string_view key) const;
         const value &at(const string &key) const;
+
+        object &erase(const char *key);
+        object &erase(string_view key);
+        object &erase(const string &key);
+
+        bool empty() const;
 
         iterator begin();
         iterator end();
