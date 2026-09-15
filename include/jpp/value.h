@@ -49,7 +49,13 @@ namespace jpp
         array &push_back(const value &value);
         array &push_back(value &&value);
 
+        array &pop_back();
+
+        value &back();
+        const value &back() const;
+
         size_t size() const;
+        bool empty() const;
 
         iterator begin();
         iterator end();

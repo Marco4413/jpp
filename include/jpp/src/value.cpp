@@ -78,9 +78,30 @@ array &array::push_back(value &&value)
     return *this;
 }
 
+array &array::pop_back()
+{
+    m_value.pop_back();
+    return *this;
+}
+
+value &array::back()
+{
+    return *m_value.back();
+}
+
+const value &array::back() const
+{
+    return *m_value.back();
+}
+
 size_t array::size() const
 {
     return m_value.size();
+}
+
+bool array::empty() const
+{
+    return m_value.empty();
 }
 
 array::iterator array::begin()
