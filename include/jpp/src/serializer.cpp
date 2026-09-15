@@ -146,6 +146,11 @@ void serializer::serialize(const string &value, string &result)
 
 void serializer::serialize(const array &value, string &result, size_t depth)
 {
+    if (value.empty()) {
+        result += "[]";
+        return;
+    }
+
     if (m_options.max_depth > 0 && depth >= m_options.max_depth) {
         result += "[ /* MAX DEPTH REACHED */ ]";
         return;
@@ -174,6 +179,11 @@ void serializer::serialize(const array &value, string &result, size_t depth)
 
 void serializer::serialize(const object &value, string &result, size_t depth)
 {
+    if (value.empty()) {
+        result += "{}";
+        return;
+    }
+
     if (m_options.max_depth > 0 && depth >= m_options.max_depth) {
         result += "{ /* MAX DEPTH REACHED */ }";
         return;
