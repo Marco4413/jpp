@@ -152,7 +152,7 @@ void serializer::serialize(const array &value, string &result, size_t depth)
     }
 
     if (m_options.max_depth > 0 && depth >= m_options.max_depth) {
-        result += "[ /* MAX DEPTH REACHED */ ]";
+        result += "[ max_depth_reached ]";
         return;
     }
 
@@ -185,7 +185,7 @@ void serializer::serialize(const object &value, string &result, size_t depth)
     }
 
     if (m_options.max_depth > 0 && depth >= m_options.max_depth) {
-        result += "{ /* MAX DEPTH REACHED */ }";
+        result += "{ max_depth_reached }";
         return;
     }
 
