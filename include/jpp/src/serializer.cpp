@@ -189,7 +189,9 @@ void serializer::serialize(const object &value, string &result, size_t depth)
             result.append(m_options.indent_size*(depth+1), ' ');
         }
         serialize(field.first, result, depth+1);
-        result += ": ";
+        result += ':';
+        if (m_options.indent_size > 0)
+            result += ' ';
         serialize(field.second, result, depth+1);
 
         first_element = false;
